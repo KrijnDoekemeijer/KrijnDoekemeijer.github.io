@@ -102,6 +102,7 @@ color: #ffffff;
  
 #menu a.active:hover {
 background: #3074a4;
+}
 </style>
 </head>
 
@@ -124,7 +125,6 @@ background: #3074a4;
 </div>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoidGltcGVsbGUiLCJhIjoiY2tnMGhnZjllMmg5ZzJ0czhxbmR3N3FsdCJ9.TP0s74fI8SCYVnxGbaoCFg';
-
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/timpelle/ckg7pna975sge1as446j57ltt',
@@ -134,45 +134,86 @@ var map = new mapboxgl.Map({
     maxZoom: 7
 });
 
-
-
 map.on('load', function () {
-// data from opendata.cityofboise.org/
-map.addSource('eventscovid', {
-'type': 'geojson',
-'data': '/events.geojson'
-});
+  // data from opendata.cityofboise.org/
+  map.addSource('eventscovid', {
+  'type': 'geojson',
+  'data': '/events.geojson'
+  });
 
   map.addLayer({
-    'id': 'eventscovid',
-    'type': 'symbol',
-    'source': 'eventscovid',
-    'filter': ['==', ['number', ['get', 'week']], 1],
-    'layout': {
-    	'text-field' : ['format',['downcase', ['get', 'name']]]}
-    // paint: {
-    //   'circle-radius': [
-    //     'interpolate',
-    //     ['linear'],
-    //     ['number', ['get', 'Casualty']],
-    //     0, 4,
-    //     5, 24
-    //   ],
-    //   'circle-color': [
-    //     'interpolate',
-    //     ['linear'],
-    //     ['number', ['get', 'Casualty']],
-    //     0, '#2DC4B2',
-    //     1, '#3BB3C3',
-    //     2, '#669EC4',
-    //     3, '#8B88B6',
-    //     4, '#A2719B',
-    //     5, '#AA5E79'
-    //   ],
-    //   'circle-opacity': 0.8
-    // }
-    // 'filter': ['==', ['number', ['get', 'week']], 1]
+      'id': 'eventscovid',
+      'type': 'symbol',
+      'source': 'eventscovid',
+      'filter': ['==', ['number', ['get', 'week']], 1],
+      'layout': {
+      	'text-field' : ['format',['downcase', ['get', 'name']]]}
+
   });
+  map.addSource('test10', {
+      type: 'vector',
+      tiles: [
+        "http://a.tiles.mapbox.com/v4/timpelle.test10/{z}/{x}/{y}.vector.pbf",
+        "http://b.tiles.mapbox.com/v4/timpelle.test10/{z}/{x}/{y}.vector.pbf"
+    ]
+   });
+   
+   // Actual data
+   map.addLayer({
+      'id': 'test10',
+      'type': 'circle',
+      'source': 'test10',
+      'layout': {
+         'visibility': 'visible'
+   },
+      'paint': {
+         'circle-radius': {
+            'base': 1.75,
+            'stops': [
+              [2,4],
+              [3,5],
+              [4,6],
+              [5,7],
+              [6,8],
+              [7,9]
+              ]},
+        'circle-color': ['get', 'fill'],
+        'circle-blur': 1,
+        'circle-opacity': 0.4
+      },
+      'source-layer': 'test10'
+   });
+   map.addSource('test11', {
+      type: 'vector',
+      tiles: [
+        "http://a.tiles.mapbox.com/v4/timpelle.test11/{z}/{x}/{y}.vector.pbf",
+        "http://b.tiles.mapbox.com/v4/timpelle.test11/{z}/{x}/{y}.vector.pbf"
+    ]
+   });
+   map.addLayer({
+      'id': 'test11',
+      'type': 'circle',
+      'source': 'test11',
+      'layout': {
+         'visibility': 'none'
+   },
+      'paint': {
+        'circle-radius': {
+            'base': 1.75,
+            'stops': [
+              [2,4],
+              [3,5],
+              [4,6],
+              [5,7],
+              [6,8],
+              [7,9]
+              ]},
+        'circle-color': ['get', 'fill'],
+        'circle-blur': 1,
+        'circle-opacity': 0.4
+      },
+      'source-layer': 'test11'
+   })
 });
 
 document.getElementById('slider').addEventListener('input', function(e) {
@@ -185,9 +226,10 @@ document.getElementById('slider').addEventListener('input', function(e) {
   // var hour12 = hour % 12 ? hour % 12 : 12;
 
   // update text in the UI
-document.getElementById('active-hour').innerText = week;
+  document.getElementById('active-hour').innerText = week;
 });
 
+// toggles
 var toggleableLayerIds = ['test10', 'test11'];
 
 for (var i = 0; i < toggleableLayerIds.length; i++) {
@@ -216,6 +258,6 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
          
     var layers = document.getElementById('menu');
     layers.appendChild(link);
-
+}
 </script>
 </body>
