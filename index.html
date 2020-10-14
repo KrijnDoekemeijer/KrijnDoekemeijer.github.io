@@ -61,10 +61,52 @@ a {
   display: inline-block;
   text-align: center;
 }
+
+    #menu {
+background: #fff;
+position: absolute;
+z-index: 1;
+top: 10px;
+right: 10px;
+border-radius: 3px;
+width: 120px;
+border: 1px solid rgba(0, 0, 0, 0.4);
+font-family: 'Open Sans', sans-serif;
+}
+ 
+#menu a {
+font-size: 13px;
+color: #404040;
+display: block;
+margin: 0;
+padding: 0;
+padding: 10px;
+text-decoration: none;
+border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+text-align: center;
+}
+ 
+#menu a:last-child {
+border: none;
+}
+ 
+#menu a:hover {
+background-color: #f8f8f8;
+color: #404040;
+}
+ 
+#menu a.active {
+background-color: #3887be;
+color: #ffffff;
+}
+ 
+#menu a.active:hover {
+background: #3074a4;
 </style>
 </head>
 
 <body>
+<nav id="menu"></nav>
 <div id='map'></div>
 <div id='console'>
   <h1>Lockdown strictness</h1>
@@ -81,13 +123,15 @@ a {
 </div>
 </div>
 <script>
-mapboxgl.accessToken = 'pk.eyJ1IjoibHVjYXNkZWdldXMiLCJhIjoiY2tnMjQwdDZzMDFlMDJwbTJkcXB1ZWp2cSJ9.DEa03DkTf6rOxdA5MNVKyQ';
+mapboxgl.accessToken = 'pk.eyJ1IjoidGltcGVsbGUiLCJhIjoiY2tnMGhnZjllMmg5ZzJ0czhxbmR3N3FsdCJ9.TP0s74fI8SCYVnxGbaoCFg';
 
 var map = new mapboxgl.Map({
-  container: 'map', // container element id
-  style: 'mapbox://styles/mapbox/light-v10',
-  center: [-74.0059, 40.7128], // initial map center in [lon, lat]
-  zoom: 0
+    container: 'map',
+    style: 'mapbox://styles/timpelle/ckg7pna975sge1as446j57ltt',
+    center: [51,2],
+    zoom: 3,
+    minZoom: 2,
+    maxZoom: 7
 });
 
 
@@ -141,7 +185,37 @@ document.getElementById('slider').addEventListener('input', function(e) {
   // var hour12 = hour % 12 ? hour % 12 : 12;
 
   // update text in the UI
-  document.getElementById('active-hour').innerText = week;
+document.getElementById('active-hour').innerText = week;
 });
+
+var toggleableLayerIds = ['test10', 'test11'];
+
+for (var i = 0; i < toggleableLayerIds.length; i++) {
+    var id = toggleableLayerIds[i];
+ 
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active';
+    link.textContent = id;
+ 
+    link.onclick = function (e) {
+        var clickedLayer = this.textContent;
+        e.preventDefault();
+        e.stopPropagation();
+        for (var j = 0; j < toggleableLayerIds.length; j++) {
+            if (clickedLayer === toggleableLayerIds[j]) {
+                layers.children[j].className = 'active';
+                map.setLayoutProperty(toggleableLayerIds[j], 'visibility', 'visible');
+            }
+            else {
+                layers.children[j].className = '';
+                 map.setLayoutProperty(toggleableLayerIds[j], 'visibility', 'none');
+            }
+        }
+    };
+         
+    var layers = document.getElementById('menu');
+    layers.appendChild(link);
+
 </script>
 </body>
