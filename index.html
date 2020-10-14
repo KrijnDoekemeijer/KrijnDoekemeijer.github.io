@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <head>
 <meta charset='utf-8' />
 <title>NYC motor vehicle collisions</title>
@@ -135,26 +135,9 @@ var map = new mapboxgl.Map({
 });
 
 map.on('load', function () {
-  // data from opendata.cityofboise.org/
-  map.addSource('eventscovid', {
-  'type': 'geojson',
-  'data': '/events.geojson'
-  });
-
-  map.addLayer({
-      'id': 'eventscovid',
-      'type': 'symbol',
-      'source': 'eventscovid',
-      'filter': ['==', ['number', ['get', 'week']], 1],
-      'layout': {
-      	'text-field' : ['format',['downcase', ['get', 'name']]]}
-
-  });
   map.addSource('test10', {
       type: 'vector',
       tiles: [
-        "http://a.tiles.mapbox.com/v4/timpelle.test10/{z}/{x}/{y}.vector.pbf",
-        "http://b.tiles.mapbox.com/v4/timpelle.test10/{z}/{x}/{y}.vector.pbf"
     ]
    });
    
@@ -186,8 +169,6 @@ map.on('load', function () {
    map.addSource('test11', {
       type: 'vector',
       tiles: [
-        "http://a.tiles.mapbox.com/v4/timpelle.test11/{z}/{x}/{y}.vector.pbf",
-        "http://b.tiles.mapbox.com/v4/timpelle.test11/{z}/{x}/{y}.vector.pbf"
     ]
    });
    map.addLayer({
@@ -214,6 +195,22 @@ map.on('load', function () {
       },
       'source-layer': 'test11'
    })
+
+     // data from opendata.cityofboise.org/
+  map.addSource('eventscovid', {
+  'type': 'geojson',
+  'data': '/events.geojson'
+  });
+
+  map.addLayer({
+      'id': 'eventscovid',
+      'type': 'symbol',
+      'source': 'eventscovid',
+      'filter': ['==', ['number', ['get', 'week']], 1],
+      'layout': {
+        'text-field' : ['format',['downcase', ['get', 'name']]]}
+
+  });
 });
 
 document.getElementById('slider').addEventListener('input', function(e) {
@@ -261,3 +258,4 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
 }
 </script>
 </body>
+ -->
