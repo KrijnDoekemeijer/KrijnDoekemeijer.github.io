@@ -81,13 +81,13 @@ a {
 </div>
 </div>
 <script>
-mapboxgl.accessToken = 'pk.eyJ1IjoibHVjYXNkZWdldXMiLCJhIjoiY2tnMjQwdDZzMDFlMDJwbTJkcXB1ZWp2cSJ9.DEa03DkTf6rOxdA5MNVKyQ';
+mapboxgl.accessToken = 'pk.eyJ1IjoidGltcGVsbGUiLCJhIjoiY2tnMGhnZjllMmg5ZzJ0czhxbmR3N3FsdCJ9.TP0s74fI8SCYVnxGbaoCFg';
 
 var map = new mapboxgl.Map({
-  container: 'map', // container element id
-  style: 'mapbox://styles/mapbox/light-v10',
-  center: [-74.0059, 40.7128], // initial map center in [lon, lat]
-  zoom: 0
+    container: 'map',
+    style: 'mapbox://styles/timpelle/ckg7pna975sge1as446j57ltt',
+    center: [51,2],
+    zoom: 3
 });
 
 
@@ -143,5 +143,42 @@ document.getElementById('slider').addEventListener('input', function(e) {
   // update text in the UI
   document.getElementById('active-hour').innerText = week;
 });
+
+var toggleableLayerIds = [ 'test11','test10' ];
+for (var i = 0; i < toggleableLayerIds.length; i++) {
+    var id = toggleableLayerIds[i];
+ 
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active';
+    link.textContent = id;
+ 
+    link.onclick = function (e) {
+        var clickedLayer = this.textContent;
+        e.preventDefault();
+        e.stopPropagation();
+         
+        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+        // toggle layer visibility by changing the layout object's visibility property
+        if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            this.className = '';
+        } 
+        else {
+            this.className = 'active';
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+        }
+        for (var j = 0; j < toggleableLayerIds.length; j++) {
+            if (id != toggleableLayerIds[j] && visibility === 'visible') {
+                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                this.className = '';
+            }
+        }
+    };
+         
+    var layers = document.getElementById('menu');
+    layers.appendChild(link);
+}
 </script>
 </body>
